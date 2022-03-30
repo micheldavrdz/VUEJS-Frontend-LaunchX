@@ -33,27 +33,27 @@
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">
-                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <tr v-for="order in $store.getters.getOrders" :key="order.id" class="border-b border-gray-200 hover:bg-gray-100">
                                 <td class="py-3 px-6 text-left whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <!-- Nombre -->
+                                        {{ order.Name }}
                                     </div>
                                 </td>
                                 <td class="py-3 px-6 text-left">
                                     <div class="flex items-center">
-                                        <!-- Email -->
+                                        {{ order.Email }}
                                     </div>
                                 </td>
                                 <td class="py-3 px-6 text-center">
                                     <div class="flex items-center justify-center">
-                                        <!-- Sabores -->
+                                        {{ order.Sabores.toString().split(',').join(', ') }}
                                     </div>
                                 </td>
                                 <td class="py-3 px-6 text-center">
-                                    <!-- Toppers -->
+                                    {{ order.Toppers.toString().split(',').join(', ') }}
                                 </td>
                                 <td class="py-3 px-6 text-center">
-                                    <!-- Mensaje -->
+                                    {{ order.Descripcion }}
                                 </td>
                             </tr>
                         </tbody>
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+
 export default {
   name: "Table",
 };

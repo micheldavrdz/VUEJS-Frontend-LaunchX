@@ -91,9 +91,7 @@
           sm:mx-auto
         "
       >
-        <form
-          novalidate=""
-          action=""
+        <div
           class="
             container
             flex flex-col
@@ -121,16 +119,16 @@
                 >
                 <input
                   id="name"
-                  v-model="m_name"
                   type="text"
                   placeholder="Nombre"
+                  :value="m_name"
                   class="
                     w-full
                     rounded-md
                     focus:ring focus:ring-opacity-75 focus:ring-pink-200
                     dark:border-coolGray-700 dark:text-coolGray-900
                   "
-                />
+                required />
               </div>
               <div class="col-span-full sm:col-span-3">
                 <label
@@ -140,7 +138,7 @@
                 >
                 <input
                   id="email"
-                  v-model="m_email"
+                  :value="m_email"
                   type="email"
                   placeholder="Email"
                   class="
@@ -149,7 +147,7 @@
                     focus:ring focus:ring-opacity-75 focus:ring-pink-200
                     dark:border-coolGray-700 dark:text-coolGray-900
                   "
-                />
+                required />
               </div>
               <div class="col-span-full sm:col-span-3">
                 <label
@@ -159,12 +157,12 @@
                 >
                 <Multiselect
                   id="sabores"
-                  v-model="m_sabores"
+                  :value="m_sabores"
                   mode="tags"
                   placeholder="Selecciona tus sabores"
                   :options="sabores"
                   class="multiselect-pink"
-                />
+                required />
               </div>
               <div class="col-span-full sm:col-span-3">
                 <label
@@ -173,13 +171,13 @@
                   >Toppers</label
                 >
                 <Multiselect
-                  id="sabores"
-                  v-model="m_toppers"
+                  id="toppers"
+                  :value="m_toppers"
                   mode="tags"
                   placeholder="Selecciona tus toppers"
                   :options="toppers"
                   class="multiselect-pink"
-                />
+                required />
               </div>
               <div class="col-span-full">
                 <label
@@ -189,7 +187,7 @@
                 >
                 <textarea
                   id="descripcion"
-                  v-model="m_message"
+                  :value="m_descripcion"
                   placeholder="Explicanos tu idea con lujo de detalles"
                   class="
                     w-full
@@ -197,7 +195,7 @@
                     focus:ring focus:ring-opacity-75 focus:ring-pink-200
                     dark:border-coolGray-700 dark:text-coolGray-900
                   "
-                ></textarea>
+                required ></textarea>
               </div>
               <div class="col-span-full">
                 <a
@@ -219,6 +217,7 @@
                     hover:bg-pink-accent-200
                     focus:shadow-outline focus:outline-none
                   "
+                  @click="onSubmit"
                   aria-label="Botón de envio"
                   title="Enviar Pedido"
                 >
@@ -227,7 +226,7 @@
               </div>
             </div>
           </fieldset>
-        </form>
+        </div>
       </div>
     </div>
   </section>
@@ -241,7 +240,10 @@ export default {
   components: { Multiselect },
   data() {
     return {
-      value: null,
+      m_name: "",
+      m_email: "",
+      m_sabores: [],
+      m_toppers: [],
       sabores: [
         "Chocolate",
         "Dulce de Leche",
@@ -258,7 +260,27 @@ export default {
         "Evento Especial",
         "Evento Religioso",
       ],
+      m_descripcion: "",
     };
+  },
+  methods: {
+    onSubmit(e) {
+      e.preventDefault();
+
+      this.$store.dispatch("addOrder", {
+        Name: this.m_name,
+        Email: this.m_email,
+        Sabores: this.m_sabores,
+        Toppers: this.m_toppers,
+        Descripcion: this.m_descripcion,
+      });
+
+      this.m_name = "";
+      this.m_email = "";
+      this.m_sabores = [];
+      this.m_toppers = [];
+      this.m_descripcion = "";
+    },
   },
 };
 </script>
